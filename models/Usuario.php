@@ -19,7 +19,6 @@ class Usuario extends ActiveRecord {
     public $password_actual;
     public $password_nuevo;
 
-    
     public function __construct($args = [])
     {
         $this->id = $args['id'] ?? null;
@@ -30,7 +29,7 @@ class Usuario extends ActiveRecord {
         $this->password2 = $args['password2'] ?? '';
         $this->confirmado = $args['confirmado'] ?? 0;
         $this->token = $args['token'] ?? '';
-        $this->admin = $args['admin'] ?? '';
+        $this->admin = isset($args['admin']) ? (int)$args['admin'] : 0;
     }
 
     // Validar el Login de Usuarios
@@ -45,7 +44,6 @@ class Usuario extends ActiveRecord {
             self::$alertas['error'][] = 'El Password no puede ir vacio';
         }
         return self::$alertas;
-
     }
 
     // Validación para cuentas nuevas
@@ -108,7 +106,7 @@ class Usuario extends ActiveRecord {
 
     // Comprobar el password
     public function comprobar_password() : bool {
-        return password_verify($this->password_actual, $this->password );
+        return password_verify($this->password_actual, $this->password);
     }
 
     // Hashea el password
